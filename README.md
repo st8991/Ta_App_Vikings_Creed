@@ -35,7 +35,15 @@ python manage.py migrate
 python manage.py runserver
 ```
 
-Open http://127.0.0.1:8000 and log in. The repository includes a sample `db.sqlite3` with demo supervisor, instructor and TA accounts (for example `sup@email.com` is a supervisor).
+The database starts empty, so create a first supervisor account (role `0`; instructors are `1` and TAs `2`) with a password of your choice:
+
+```bash
+python manage.py shell -c "from proj_app.models import MyUserModel; MyUserModel.objects.create(name='Admin', email='admin@example.com', password='<choose one>', address='', phone_number='', role=0)"
+```
+
+Open http://127.0.0.1:8000 and log in with that account, then add instructors, TAs and courses from the app.
+
+Outside local development, set the `DJANGO_SECRET_KEY` environment variable. Without it, the app makes a random key at startup, which signs everyone out on every restart.
 
 ## Tests
 
@@ -59,4 +67,4 @@ Sprint 2 Doc.pdf    Sprint documentation
 
 ## Note
 
-This is a class project and isn't production-ready: passwords are stored in plain text, the secret key is committed and `DEBUG` is on. Don't deploy it as-is.
+This is a class project and isn't production-ready: passwords are stored in plain text and `DEBUG` is on. Don't deploy it as-is.
